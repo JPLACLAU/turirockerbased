@@ -1,6 +1,5 @@
-FROM rocker/r-ver:3.6.0
+FROM rocker/r-ver:3.6.1
 
-USER root
 
 RUN apt-get update && apt-get install -y \
     sudo \
@@ -25,8 +24,6 @@ RUN wget --no-verbose https://download3.rstudio.org/ubuntu-14.04/x86_64/VERSION 
     cp -R /usr/local/lib/R/site-library/shiny/examples/* /srv/shiny-server/ && \
     chown shiny:shiny /var/lib/shiny-server
 
-RUN chmod +x shiny-server.sh
-RUN chmod +x /usr/bin/
 
 COPY shiny-server.sh /usr/bin/shiny-server.sh
 
