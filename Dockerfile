@@ -1,5 +1,6 @@
 FROM rocker/r-ver:3.6.0
 
+
 RUN apt-get update && apt-get install -y \
     sudo \
     gdebi-core \
@@ -9,7 +10,15 @@ RUN apt-get update && apt-get install -y \
     libcairo2-dev \
     libxt-dev \
     xtail \
+    git \
     wget
+	
+# Pull Github code of Turiapp	
+RUN cd /srv/shiny-server
+RUN sudo rm index.html
+RUN sudo git init
+RUN sudo git clone https://JPLACLAU:2Sc5xZH22p6smNS@github.com/JPLACLAU/Turiappv0.1
+
 
 
 # Download and install shiny server
@@ -19,9 +28,12 @@ RUN wget --no-verbose https://download3.rstudio.org/ubuntu-14.04/x86_64/VERSION 
     gdebi -n ss-latest.deb && \
     rm -f version.txt ss-latest.deb && \
     . /etc/environment && \
-    R -e "install.packages(c('shiny', 'rmarkdown'), repos='$MRAN')" && \
+    R -e "install.packages(c('shiny', 'rmarkdown', 'devtools', 'quantmod', 'tidyverse', 'gsheet', 'ggplot2', 'shinydashboard', 'highcharter', 'shinyWidgets', 'latexpdf', 'log4r', 'shinyBS'), repos='$MRAN')" && \
     cp -R /usr/local/lib/R/site-library/shiny/examples/* /srv/shiny-server/ && \
     chown shiny:shiny /var/lib/shiny-server
+	
+RUN ["chmod", "+x", "/usr/bin/shiny-server.sh"]
+
 
 EXPOSE 3838
 
